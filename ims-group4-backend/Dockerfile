@@ -13,7 +13,7 @@ WORKDIR "/src/ims-group4-backend"
 RUN dotnet build "ims-group4-backend.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "ims-group4-backend.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "ims-group4-backend.csproj" -c Release -o /app/publish 
 
 FROM base AS final
 WORKDIR /app
