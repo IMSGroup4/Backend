@@ -9,16 +9,18 @@ namespace ims_group4_backend.Controllers
     public class TodoController : ControllerBase
     {
         private readonly HelloWorld hw = new HelloWorld();
+        private readonly FirebaseModel fm = new FirebaseModel();
 
         [HttpGet("{id}")]
         public ActionResult<HelloWorld> Get(int id)
         {
-            string? lang = hw.Get(id);
-            if (lang == null)
-            {
-                return BadRequest();
-            }
-            return Ok(lang);
+            // string? lang = hw.Get(id);
+            // if (lang == null)
+            // {
+            //     return BadRequest();
+            // }
+            // return Ok(lang);
+            return Ok(fm.getPosition());
         }
 
         [HttpPost]

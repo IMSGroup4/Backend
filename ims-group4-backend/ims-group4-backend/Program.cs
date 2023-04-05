@@ -16,6 +16,12 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+var WebSocketOptions = new WebSocketOptions{
+    KeepAliveInterval = TimeSpan.FromMinutes(1)
+};
+
+app.UseWebSockets();
+
 app.UseAuthorization();
 
 app.MapControllers();
