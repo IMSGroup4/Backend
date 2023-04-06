@@ -21,6 +21,7 @@ namespace ims_group4_backend.Controllers
             // }
             // return Ok(lang);
             return Ok(fm.getPosition());
+            //return Ok("fm.getPosition()");
         }
 
         [HttpPost]
