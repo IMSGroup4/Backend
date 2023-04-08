@@ -19,15 +19,19 @@ namespace ims_group4_backend.Models{
 
 
         public async Task<Position> getPosition(int id){
+
             FirebaseResponse response = await m_client.GetAsync("positions/" + id);
             // Position pos = response.ResultAs<Position>();
             return response.ResultAs<Position>();
+            
         }
 
         public async Task<List<Position>> getAllPositions(){
+
             FirebaseResponse response = await m_client.GetAsync("positions");
             Console.WriteLine(response.Body);
             return response.ResultAs<List<Position>>();
+
         }
 
         public async Task<Position> setPosition(Position position, int id){
