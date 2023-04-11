@@ -33,6 +33,7 @@ namespace ims_group4_backend.Models{
                     y = obstacle.y,
                     timestamp = obstacle.timestamp,
 					base64_image = obstacle.base64_image,
+					infos_image = obstacle.infos_image
                 };
 
                 obstacles.Add(new_obstacle);

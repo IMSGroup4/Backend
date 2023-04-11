@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
 using FireSharp;
 using FireSharp.Response;
-
+using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Controllers{
     [ApiController]
@@ -14,6 +14,7 @@ namespace ims_group4_backend.Controllers{
 
         private ObstacleModel om = new ObstacleModel();
         private FirebaseModel firebaseModel = new FirebaseModel();
+		private GoogleApiModel googleApiModel = new GoogleApiModel();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Obstacle>> Get_obstacle(int id){
@@ -35,8 +36,12 @@ namespace ims_group4_backend.Controllers{
         }
 
         [HttpPost("")]
-        public async Task<ActionResult<Obstacle>> Set_obstacle(Obstacle new_obstacle, int id) {
-            Obstacle obstacle = await firebaseModel.setObstacle(new_obstacle, id);
+        public async Task<ActionResult<Obstacle>> Set_obstacle(Obstacle new_obstacle) {
+			List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await googleApiModel.DetectImage(new_obstacle.base64_image!);
+
+            new_obstacle.infos_image = JObject.Parse(JsonSerializer.Serialize(annotations[0]));
+            Obstacle obstacle = await firebaseModel.setObstacle(new_obstacle);
+
             return Created(nameof(Get_obstacle), obstacle);
         }
 

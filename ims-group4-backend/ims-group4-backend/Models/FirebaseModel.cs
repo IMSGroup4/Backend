@@ -2,7 +2,7 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp;
 using FireSharp.Response;
-
+using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Models{
     public class FirebaseModel{
@@ -57,11 +57,11 @@ namespace ims_group4_backend.Models{
             FirebaseResponse response = await m_client.GetAsync("mower/obstacles/");
             var obstaclesDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Obstacle>>(response.Body);
             Console.WriteLine(response.Body);
+            
             return obstaclesDict.Values.ToList();
-
         }
 
-        public async Task<Obstacle> setObstacle(Obstacle obstacle, int id){
+        public async Task<Obstacle> setObstacle(Obstacle obstacle) {
             Console.WriteLine("New Obstacle");
             Console.WriteLine(obstacle);
 
