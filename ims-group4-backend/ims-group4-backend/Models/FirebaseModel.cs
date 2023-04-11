@@ -30,15 +30,11 @@ namespace ims_group4_backend.Models{
         }
 
         public async Task<Position> setPosition(Position position, int id){
-            Console.WriteLine("New Position");
-            Console.WriteLine(position);
-
+            
             SetResponse response = await m_client.SetAsync("mower/positions/", position);
-
-            Console.WriteLine(response.Body);
-
             return response.ResultAs<Position>();
         }
+
         public async Task<Position> pushPosition(Position position){
 
             PushResponse response = await m_client.PushAsync("mower/locations/", position);

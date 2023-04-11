@@ -20,8 +20,8 @@ namespace ims_group4_backend.Controllers
             //     return BadRequest();
             // }
             // return Ok(lang);
-            return Ok(fm.getPosition(1));
-            //return Ok("fm.getPosition()");
+            //return Ok(fm.getPosition(1));
+            return Ok("Hello there");
         }
 
         [HttpPost]

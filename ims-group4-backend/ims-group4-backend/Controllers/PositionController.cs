@@ -25,7 +25,6 @@ namespace ims_group4_backend.Controllers{
             if(position != null){
                 return Ok(position);
             }
-
             string error = ("Position with id " + id + " does not exist");
             return Ok(error);
         }
