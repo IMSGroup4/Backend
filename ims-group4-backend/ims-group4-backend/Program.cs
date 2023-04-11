@@ -22,6 +22,8 @@ var WebSocketOptions = new WebSocketOptions{
     KeepAliveInterval = TimeSpan.FromMinutes(1)
 };
 
+app.UseHttpsRedirection();
+
 app.UseWebSockets();
 
 app.UseAuthorization();
