@@ -44,5 +44,32 @@ namespace ims_group4_backend.Models{
 
             return response.ResultAs<Position>();
         }
+
+        public async Task<Obstacle> getObstacle(int id){
+
+            FirebaseResponse response = await m_client.GetAsync("mower/obstacles/" + id);
+            Obstacle pos = response.ResultAs<Obstacle>();
+            return response.ResultAs<Obstacle>();
+            
+        }
+
+        public async Task<List<Obstacle>> getAllObstacles(){
+
+            FirebaseResponse response = await m_client.GetAsync("mower/obstacles");
+            Console.WriteLine(response.Body);
+            return response.ResultAs<List<Obstacle>>();
+
+        }
+
+        public async Task<Obstacle> setObstacle(Obstacle obstacle, int id){
+            Console.WriteLine("New Obstacle");
+            Console.WriteLine(obstacle);
+
+            SetResponse response = await m_client.SetAsync("mower/obstacles/"+id, obstacle);
+
+            Console.WriteLine(response.Body);
+
+            return response.ResultAs<Obstacle>();
+        }
     }
 }

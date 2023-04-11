@@ -10,7 +10,7 @@ using FireSharp.Response;
 namespace ims_group4_backend.Controllers{
     [ApiController]
     [Route("api/position")]
-    public class ApiController : ControllerBase{
+    public class PositionController : ControllerBase{
 
         private PositionModel pm = new PositionModel();
         private FirebaseModel firebaseModel = new FirebaseModel();
