@@ -22,16 +22,16 @@ namespace ims_group4_backend.Models{
             }
         }
 
-        public List<Obstacle> get_all_obstacle(){ 
+        public List<Obstacle> get_all_obstacle() { 
             return obstacles;
         }
 
         public int add_obstacle(Obstacle obstacle){
             try {
                 Obstacle new_obstacle = new Obstacle {
-                    m_x_position = obstacle.m_x_position,
-                    m_y_position = obstacle.m_y_position,
-                    m_time_stamp = obstacle.m_time_stamp,
+                    x = obstacle.x,
+                    y = obstacle.y,
+                    timestamp = obstacle.timestamp,
 					base64_image = obstacle.base64_image,
                 };
 

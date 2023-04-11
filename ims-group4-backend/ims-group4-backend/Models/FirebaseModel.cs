@@ -54,10 +54,10 @@ namespace ims_group4_backend.Models{
         }
 
         public async Task<List<Obstacle>> getAllObstacles(){
-
-            FirebaseResponse response = await m_client.GetAsync("mower/obstacles");
+            FirebaseResponse response = await m_client.GetAsync("mower/obstacles/");
+            var obstaclesDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Obstacle>>(response.Body);
             Console.WriteLine(response.Body);
-            return response.ResultAs<List<Obstacle>>();
+            return obstaclesDict.Values.ToList();
 
         }
 
@@ -65,11 +65,12 @@ namespace ims_group4_backend.Models{
             Console.WriteLine("New Obstacle");
             Console.WriteLine(obstacle);
 
-            SetResponse response = await m_client.SetAsync("mower/obstacles/"+id, obstacle);
+            PushResponse response = await m_client.PushAsync("mower/obstacles/", obstacle);
 
-            Console.WriteLine(response.Body);
+            string key = response.Result.name;
 
-            return response.ResultAs<Obstacle>();
+            FirebaseResponse getResponse = await m_client.GetAsync($"mower/obstacles/{key}");
+            return getResponse.ResultAs<Obstacle>();
         }
     }
 }

@@ -34,7 +34,7 @@ namespace ims_group4_backend.Controllers{
 
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("")]
         public async Task<ActionResult<Obstacle>> Set_obstacle(Obstacle new_obstacle, int id) {
             Obstacle obstacle = await firebaseModel.setObstacle(new_obstacle, id);
             return Created(nameof(Get_obstacle), obstacle);
