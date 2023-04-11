@@ -17,15 +17,14 @@ namespace ims_group4_backend.Models{
             m_client = new FirebaseClient(config);
         }
 
-
         public async Task<Position> getPosition(int id){
-            FirebaseResponse response = await m_client.GetAsync("positions/" + id);
+            FirebaseResponse response = await m_client.GetAsync("mower/locations" + id);
             // Position pos = response.ResultAs<Position>();
             return response.ResultAs<Position>();
         }
 
         public async Task<List<Position>> getAllPositions(){
-            FirebaseResponse response = await m_client.GetAsync("positions");
+            FirebaseResponse response = await m_client.GetAsync("mower/positions");
             Console.WriteLine(response.Body);
             return response.ResultAs<List<Position>>();
         }
@@ -34,8 +33,16 @@ namespace ims_group4_backend.Models{
             Console.WriteLine("New Position");
             Console.WriteLine(position);
 
-            SetResponse response = await m_client.SetAsync("positions/"+id, position);
+            SetResponse response = await m_client.SetAsync("mower/positions/", position);
 
+            Console.WriteLine(response.Body);
+
+            return response.ResultAs<Position>();
+        }
+        public async Task<Position> pushPosition(Position position){
+
+            PushResponse response = await m_client.PushAsync("mower/locations/", position);
+            Console.WriteLine("Pushed to firebase");
             Console.WriteLine(response.Body);
 
             return response.ResultAs<Position>();

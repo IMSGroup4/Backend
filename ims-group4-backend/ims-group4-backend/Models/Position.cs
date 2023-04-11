@@ -1,14 +1,18 @@
 
-
-using ims_group4_backend.Models;
-
 namespace ims_group4_backend.Models{
     public class Position{
-        
-        public string? m_time_stamp{get; set;}
-        public float m_x_position{get;set;}
-        public float m_y_position{get;set;}
 
+        public string? time_stamp{get; set;}
+        public float x{get;set;}
+        public float y{get;set;}
 
     }
+
+
+    public struct PositionData {
+        public Position position { get; set; }
+        
+    }
+
+
 }

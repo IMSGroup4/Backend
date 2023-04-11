@@ -2,10 +2,11 @@
 using ims_group4_backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
+// using System.Text.Json;
 using FireSharp;
 using FireSharp.Response;
-
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Controllers{
     [ApiController]
@@ -45,6 +46,22 @@ namespace ims_group4_backend.Controllers{
             return Created(nameof(Get_position), position);
 
         }
+
+        [HttpPost]
+        public async Task<ActionResult<PositionData>> Push_position(PositionData new_position)
+        {
+            Console.WriteLine(new_position.position);
+            try{
+                Position position = await firebaseModel.pushPosition(new_position.position);
+                return Created(nameof(Get_position), position);
+            }catch{
+                return BadRequest("Bad request");
+            }
+            
+        }
+
+
+        
 
     }
 }
