@@ -11,7 +11,7 @@ namespace ims_group4_backend.Models{
 
         List<Position> positions = new List<Position>();
 
-        public Position? get_by_id(int id){
+        public Position? getByID(int id){ // int id out of date
  
             Console.WriteLine(positions.Count);
             if(positions.Count == 0){
@@ -23,7 +23,7 @@ namespace ims_group4_backend.Models{
             }
         }
 
-        public List<Position> get_all_position(){ 
+        public List<Position> getAllPosition(){ 
             return positions;
         }
 
