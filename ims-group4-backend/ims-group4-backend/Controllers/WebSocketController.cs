@@ -7,8 +7,8 @@ using System.Text.Json;
 namespace ims_group4_backend.Controllers{
     
     public class WebSocketController : ControllerBase {
-        private static WebSocket? appSocket;
-        private static WebSocket? mowerSocket;
+        private static WebSocket? m_appSocket;
+        private static WebSocket? m_mowerSocket;
 
         [Route("/ws/{type}")]
         public async Task get(string type)
@@ -21,25 +21,25 @@ namespace ims_group4_backend.Controllers{
                 switch (type)
                 {
                     case "app":
-                        if(appSocket != null){
-                            await appSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                        if(m_appSocket != null){
+                            await m_appSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
                             Console.WriteLine("Closed old app socket");
                         }
                             
-                        appSocket = webSocket;
-                        await Echo(appSocket);
-                        appSocket = null;
+                        m_appSocket = webSocket;
+                        await Echo(m_appSocket);
+                        m_appSocket = null;
                         Console.WriteLine("Closed old app socket");
                         break;
                     case "mower":
-                        if(mowerSocket != null){
-                            await mowerSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                        if(m_mowerSocket != null){
+                            await m_mowerSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
                             Console.WriteLine("Closed old mower socket");
                         }
 
-                        mowerSocket = webSocket;
-                        await Echo(mowerSocket);
-                        mowerSocket = null;
+                        m_mowerSocket = webSocket;
+                        await Echo(m_mowerSocket);
+                        m_mowerSocket = null;
                         Console.WriteLine("Closed old mower socket");
                         break;
                     default:
@@ -66,14 +66,14 @@ namespace ims_group4_backend.Controllers{
                 string bufferStr = Encoding.UTF8.GetString(buffer);
                 Console.WriteLine(bufferStr);
 
-                if(webSocket == appSocket && mowerSocket != null){
-                    await mowerSocket.SendAsync(
+                if(webSocket == m_appSocket && m_mowerSocket != null){
+                    await m_mowerSocket.SendAsync(
                         new ArraySegment<byte>(buffer, 0, receiveResult.Count),
                         receiveResult.MessageType,
                         receiveResult.EndOfMessage,
                         CancellationToken.None);
-                } else if(webSocket == mowerSocket && appSocket != null){
-                    await appSocket.SendAsync(
+                } else if(webSocket == m_mowerSocket && m_appSocket != null){
+                    await m_appSocket.SendAsync(
                         new ArraySegment<byte>(buffer, 0, receiveResult.Count),
                         receiveResult.MessageType,
                         receiveResult.EndOfMessage,

@@ -1,11 +1,13 @@
 # Backend
 The Backend repository
 
---------------------------------------
+## API Endpoints
+#### Live server: https://ims-group4-backend.azurewebsites.net
+-------------
+### **Positions**
 
-http://localhost:8000/api/positions
-HttpPost requests
-Json format 
+**POST** /api/positions
+##### Body:
 ```
 {
     "position": {
@@ -15,25 +17,47 @@ Json format
     }
 }
 ```
---------------------------------------
+-------------
 
-HttpGet request
-Get all positions
-http://localhost:8000/api/positions
+**GET** /api/positions
+##### Result:
+```
+[
+    {
+        "timestamp": "12243123",
+        "x": 12,
+        "y": 2
+    }
+]
+```
+-------------
 
+### **Obstacles**
 
---------------------------------------
+**GET** /api/obstacles
+##### Result:
+```
+[
+    {
+        "timestamp": "1234567",
+        "x": 1,
+        "y": 1,
+        "base64_image": "your_image_string_here"
+        "infos_image": {
+            "Confidence": 0,
+            "Description": "Plant",
+            "Locale": "",
+            "Mid": "/m/05s2s",
+            "Score": 0.9638823,
+            "Topicality": 0.9638823
+        }
+    }
+]
+```
+-------------
 
-HttpGet request
-Get all obstacles
-http://localhost:8000/api/obstacles
-
---------------------------------------
-
-HttpPost request
-Post an obstacle
-http://localhost:8000/api/obstacles
-Json format
+**POST** /api/obstacles
+##### Body:
 ```
 {
     "obstacle": {
@@ -44,4 +68,4 @@ Json format
     }
 }
 ```
-
+-------------

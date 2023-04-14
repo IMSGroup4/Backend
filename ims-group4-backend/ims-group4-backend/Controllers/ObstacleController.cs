@@ -12,14 +12,12 @@ namespace ims_group4_backend.Controllers{
     [Route("api/obstacles")]
     public class ObstacleController : ControllerBase{
 
-        private ObstacleModel om = new ObstacleModel();
-        private FirebaseModel firebaseModel = new FirebaseModel();
-		private GoogleApiModel googleApiModel = new GoogleApiModel();
+        private ObstacleModel m_obstacleModel = new ObstacleModel();
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Obstacle>> getObstacle(int id){
 
-            Obstacle position = await firebaseModel.getObstacle(id);
+            Obstacle position = await m_obstacleModel.getObstacle(id);
 
             if(position != null){
                 return Ok(position);
@@ -30,18 +28,13 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet]
         public async Task<ActionResult<List<Obstacle>>> getAllObstacles() {
-            var obstacles = await firebaseModel.getAllObstacles();
+            var obstacles = await m_obstacleModel.getAllObstacles();
             return Ok(obstacles);
-
         }
 
         [HttpPost]
-        public async Task<ActionResult<Obstacle>> pushObstacle(ObstacleData new_obstacle) {
-			List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await googleApiModel.DetectImage(new_obstacle.obstacle.base64_image!);
-
-            new_obstacle.obstacle.infos_image = JObject.Parse(JsonSerializer.Serialize(annotations[0]));
-            Obstacle obstacle = await firebaseModel.pushObstacle(new_obstacle.obstacle);
-
+        public async Task<ActionResult<Obstacle>> pushObstacle(ObstacleData newObstacle) {
+            Obstacle obstacle = await m_obstacleModel.pushObstacle(newObstacle.obstacle);
             return Created(nameof(getObstacle), obstacle);
         }
     }

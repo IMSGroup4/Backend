@@ -3,51 +3,49 @@ using FireSharp.Config;
 using FireSharp.Interfaces;
 using FireSharp;
 using FireSharp.Response;
+using Newtonsoft.Json;
 
 namespace ims_group4_backend.Models{
 
     public class ObstacleModel{
 
-        List<Obstacle> obstacles = new List<Obstacle>();
+        private IFirebaseClient m_firebaseClient;
+        private GoogleApiModel m_googleApiModel = new GoogleApiModel();
+        public ObstacleModel() {
+            FirebaseModel firebaseModel = new FirebaseModel();
+            m_firebaseClient = firebaseModel.m_firebaseClient;
+        }
+        public async Task<Obstacle> getObstacle(int id){
 
-        public Obstacle? get_by_id(int id){
- 
-            Console.WriteLine(obstacles.Count);
-            if(obstacles.Count == 0){
-                Console.WriteLine("No positions");
-                return null;
-            }
-            else{
-                return obstacles[id];
-            }
+            FirebaseResponse response = await m_firebaseClient.GetAsync("mower/obstacles/" + id);
+            Obstacle pos = response.ResultAs<Obstacle>();
+            return response.ResultAs<Obstacle>();
         }
 
-        public List<Obstacle> get_all_obstacle() { 
-            return obstacles;
+        public async Task<List<Obstacle>?> getAllObstacles(){
+            FirebaseResponse response = await m_firebaseClient.GetAsync("mower/obstacles/");
+            string obstaclesJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Obstacle>>().Values);
+            List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
+            return obstacleList;
         }
 
-        public int add_obstacle(Obstacle obstacle){
-            try {
-                Obstacle new_obstacle = new Obstacle {
-                    x = obstacle.x,
-                    y = obstacle.y,
-                    timestamp = obstacle.timestamp,
-					base64_image = obstacle.base64_image,
-					infos_image = obstacle.infos_image
-                };
+        public async Task<Obstacle> pushObstacle(Obstacle newObstacle) {
+            List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await m_googleApiModel.DetectImage(newObstacle.base64_image!);
+            
+            string annotationJson = JsonConvert.SerializeObject(annotations[0]);
+            ImageInformation? infos_image = JsonConvert.DeserializeObject<ImageInformation>(annotationJson);
 
-                obstacles.Add(new_obstacle);
+            newObstacle.infos_image = infos_image;
 
-                foreach(var obs in obstacles){
-                    Console.WriteLine(obs);
-                }
+            Console.WriteLine("New Obstacle");
+            Console.WriteLine(newObstacle);
 
-                return (obstacles.Count == 1) ? 0 : obstacles.Count-1;
+            PushResponse response = await m_firebaseClient.PushAsync("mower/obstacles/", newObstacle);
 
-            }catch{
-                Console.WriteLine("Could not add position to list");
-                return -1;
-            }
+            string key = response.Result.name;
+
+            FirebaseResponse getResponse = await m_firebaseClient.GetAsync($"mower/obstacles/{key}");
+            return getResponse.ResultAs<Obstacle>();
         }
     }
 }

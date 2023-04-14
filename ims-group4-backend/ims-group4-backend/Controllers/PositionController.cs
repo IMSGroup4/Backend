@@ -12,14 +12,12 @@ namespace ims_group4_backend.Controllers{
     [ApiController]
     [Route("api/positions")]
     public class PositionController : ControllerBase{
-        private PositionModel pm = new PositionModel();
-        private FirebaseModel firebaseModel = new FirebaseModel();
+        private PositionModel m_positionModel = new PositionModel();
 
         [HttpGet("{id}")]
-
         public async Task<ActionResult<Position>> getPosition(int id){ // int id does not work
 
-            Position position = await firebaseModel.getPosition(id);
+            Position position = await m_positionModel.getPosition(id);
 
             if(position != null){
                 return Ok(position);
@@ -31,37 +29,21 @@ namespace ims_group4_backend.Controllers{
         [HttpGet]
         public async Task<ActionResult<List<Position>>> getAllPositions(){
 
-            var positions = await firebaseModel.getAllPositions();
-            //string jsonArray = JsonConvert.SerializeObject(positions.Values);
-            //Console.WriteLine(jsonArray);
+            var positions = await m_positionModel.getAllPositions();
             return Ok(positions);
 
         }
-
-        // Out of date
-        /*
-        [HttpPost("{id}")]
-        public async Task<ActionResult<Position>> Set_position(Position new_position, int id){
-
-            Position position = await firebaseModel.setPosition(new_position, id);
-
-            return Created(nameof(Get_position), position);
-
-        }
-        */
 
         [HttpPost]
         public async Task<ActionResult<PositionData>> pushPosition(PositionData newPosition)
         {
             Console.WriteLine(newPosition.position);
             try{
-                Position position = await firebaseModel.pushPosition(newPosition.position);
+                Position position = await m_positionModel.pushPosition(newPosition.position);
                 return Created(nameof(getPosition), position);
             }catch{
                 return BadRequest("Bad request");
             } 
         }
-
-
     }
 }
