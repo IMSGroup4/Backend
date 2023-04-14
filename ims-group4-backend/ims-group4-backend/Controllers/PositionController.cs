@@ -10,7 +10,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Controllers{
     [ApiController]
-    [Route("api/position")]
+    [Route("api/positions")]
     public class ApiController : ControllerBase{
 
         private PositionModel pm = new PositionModel();
@@ -18,7 +18,7 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet("{id}")]
 
-        public async Task<ActionResult<Position>> Get_position(int id){
+        public async Task<ActionResult<Position>> getPosition(int id){ // int id does not work
 
             Position position = await firebaseModel.getPosition(id);
 
@@ -29,14 +29,18 @@ namespace ims_group4_backend.Controllers{
             return Ok(error);
         }
 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<Position>>> Get_all_positions(){
+        [HttpGet]
+        public async Task<ActionResult<List<Position>>> getAllPositions(){
 
             var positions = await firebaseModel.getAllPositions();
+            //string jsonArray = JsonConvert.SerializeObject(positions.Values);
+            //Console.WriteLine(jsonArray);
             return Ok(positions);
 
         }
 
+        // Out of date
+        /*
         [HttpPost("{id}")]
         public async Task<ActionResult<Position>> Set_position(Position new_position, int id){
 
@@ -45,22 +49,20 @@ namespace ims_group4_backend.Controllers{
             return Created(nameof(Get_position), position);
 
         }
+        */
 
         [HttpPost]
-        public async Task<ActionResult<PositionData>> Push_position(PositionData new_position)
+        public async Task<ActionResult<PositionData>> pushPosition(PositionData newPosition)
         {
-            Console.WriteLine(new_position.position);
+            Console.WriteLine(newPosition.position);
             try{
-                Position position = await firebaseModel.pushPosition(new_position.position);
-                return Created(nameof(Get_position), position);
+                Position position = await firebaseModel.pushPosition(newPosition.position);
+                return Created(nameof(getPosition), position);
             }catch{
                 return BadRequest("Bad request");
-            }
-            
+            } 
         }
 
-
-        
 
     }
 }

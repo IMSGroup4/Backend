@@ -11,7 +11,7 @@ namespace ims_group4_backend.Controllers{
         private static WebSocket? mowerSocket;
 
         [Route("/ws/{type}")]
-        public async Task Get(string type)
+        public async Task get(string type)
         {
             
             if (HttpContext.WebSockets.IsWebSocketRequest)
