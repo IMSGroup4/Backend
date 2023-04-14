@@ -61,10 +61,10 @@ namespace ims_group4_backend.Models{
             var obstaclesDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Obstacle>>(response.Body);
             Console.WriteLine(response.Body);
             
-            return obstaclesDict.Values.ToList();
+            return obstaclesDict!.Values.ToList();
         }
 
-        public async Task<Obstacle> setObstacle(Obstacle obstacle) {
+        public async Task<Obstacle> pushObstacle(Obstacle obstacle) {
             Console.WriteLine("New Obstacle");
             Console.WriteLine(obstacle);
 

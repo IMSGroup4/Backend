@@ -10,4 +10,9 @@ namespace ims_group4_backend.Models{
         public string? base64_image{get; set;}
         public JObject? infos_image{get; set;}
     }
+
+    public struct ObstacleData {
+        public Obstacle obstacle { get; set; }
+        
+    }
 }

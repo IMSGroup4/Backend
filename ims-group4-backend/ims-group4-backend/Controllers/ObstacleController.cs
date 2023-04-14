@@ -9,7 +9,7 @@ using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Controllers{
     [ApiController]
-    [Route("api/obstacle")]
+    [Route("api/obstacles")]
     public class ObstacleController : ControllerBase{
 
         private ObstacleModel om = new ObstacleModel();
@@ -17,7 +17,7 @@ namespace ims_group4_backend.Controllers{
 		private GoogleApiModel googleApiModel = new GoogleApiModel();
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<Obstacle>> Get_obstacle(int id){
+        public async Task<ActionResult<Obstacle>> getObstacle(int id){
 
             Obstacle position = await firebaseModel.getObstacle(id);
 
@@ -28,22 +28,21 @@ namespace ims_group4_backend.Controllers{
             return Ok(error);
         }
 
-        [HttpGet("all")]
-        public async Task<ActionResult<List<Obstacle>>> Get_all_obstacles() {
+        [HttpGet]
+        public async Task<ActionResult<List<Obstacle>>> getAllObstacles() {
             var obstacles = await firebaseModel.getAllObstacles();
             return Ok(obstacles);
 
         }
 
-        [HttpPost("")]
-        public async Task<ActionResult<Obstacle>> Set_obstacle(Obstacle new_obstacle) {
-			List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await googleApiModel.DetectImage(new_obstacle.base64_image!);
+        [HttpPost]
+        public async Task<ActionResult<Obstacle>> pushObstacle(ObstacleData new_obstacle) {
+			List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await googleApiModel.DetectImage(new_obstacle.obstacle.base64_image!);
 
-            new_obstacle.infos_image = JObject.Parse(JsonSerializer.Serialize(annotations[0]));
-            Obstacle obstacle = await firebaseModel.setObstacle(new_obstacle);
+            new_obstacle.obstacle.infos_image = JObject.Parse(JsonSerializer.Serialize(annotations[0]));
+            Obstacle obstacle = await firebaseModel.pushObstacle(new_obstacle.obstacle);
 
-            return Created(nameof(Get_obstacle), obstacle);
+            return Created(nameof(getObstacle), obstacle);
         }
-
     }
 }
