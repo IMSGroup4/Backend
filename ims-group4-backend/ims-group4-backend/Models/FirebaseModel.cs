@@ -47,5 +47,33 @@ namespace ims_group4_backend.Models{
 
             return response.ResultAs<Position>();
         }
+
+        public async Task<Obstacle> getObstacle(int id){
+
+            FirebaseResponse response = await m_client.GetAsync("mower/obstacles/" + id);
+            Obstacle pos = response.ResultAs<Obstacle>();
+            return response.ResultAs<Obstacle>();
+            
+        }
+
+        public async Task<List<Obstacle>> getAllObstacles(){
+            FirebaseResponse response = await m_client.GetAsync("mower/obstacles/");
+            var obstaclesDict = Newtonsoft.Json.JsonConvert.DeserializeObject<Dictionary<string, Obstacle>>(response.Body);
+            Console.WriteLine(response.Body);
+            
+            return obstaclesDict.Values.ToList();
+        }
+
+        public async Task<Obstacle> setObstacle(Obstacle obstacle) {
+            Console.WriteLine("New Obstacle");
+            Console.WriteLine(obstacle);
+
+            PushResponse response = await m_client.PushAsync("mower/obstacles/", obstacle);
+
+            string key = response.Result.name;
+
+            FirebaseResponse getResponse = await m_client.GetAsync($"mower/obstacles/{key}");
+            return getResponse.ResultAs<Obstacle>();
+        }
     }
 }

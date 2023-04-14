@@ -10,9 +10,8 @@ using Newtonsoft.Json.Linq;
 
 namespace ims_group4_backend.Controllers{
     [ApiController]
-    [Route("api/positions")]
-    public class ApiController : ControllerBase{
-
+    [Route("api/position")]
+    public class PositionController : ControllerBase{
         private PositionModel pm = new PositionModel();
         private FirebaseModel firebaseModel = new FirebaseModel();
 
