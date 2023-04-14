@@ -21,18 +21,26 @@ namespace ims_group4_backend.Controllers{
                 switch (type)
                 {
                     case "app":
-                        if(appSocket == null){
-                            appSocket = webSocket;
-                            await Echo(appSocket);
-                            appSocket = null;
+                        if(appSocket != null){
+                            await appSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                            Console.WriteLine("Closed old app socket");
                         }
+                            
+                        appSocket = webSocket;
+                        await Echo(appSocket);
+                        appSocket = null;
+                        Console.WriteLine("Closed old app socket");
                         break;
                     case "mower":
-                        if(mowerSocket == null){
-                            mowerSocket = webSocket;
-                            await Echo(mowerSocket);
-                            mowerSocket = null;
+                        if(mowerSocket != null){
+                            await mowerSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                            Console.WriteLine("Closed old mower socket");
                         }
+
+                        mowerSocket = webSocket;
+                        await Echo(mowerSocket);
+                        mowerSocket = null;
+                        Console.WriteLine("Closed old mower socket");
                         break;
                     default:
                         await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
@@ -72,8 +80,7 @@ namespace ims_group4_backend.Controllers{
                         CancellationToken.None);
                 }
                 
-                receiveResult = await webSocket.ReceiveAsync(
-                    new ArraySegment<byte>(buffer), CancellationToken.None);
+                receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
 
             await webSocket.CloseAsync(
