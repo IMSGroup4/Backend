@@ -24,22 +24,3 @@ namespace ims_group4_backend.Models{
         public float? topicality{get; set;}
     }
 }
-
-
-
-/* "infos_image": {
-            "Confidence": [],
-            "Description": [],
-            "Locale": [],
-            "Mid": [],
-            "Score": [],
-            "Topicality": []
-        }
-
-            "Confidence": 0,
-            "Description": "Plant",
-            "Locale": "",
-            "Mid": "/m/05s2s",
-            "Score": 0.9638823,
-            "Topicality": 0.9638823
-}*/
