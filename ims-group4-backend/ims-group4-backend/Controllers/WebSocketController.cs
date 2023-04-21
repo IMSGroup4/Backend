@@ -13,46 +13,60 @@ namespace ims_group4_backend.Controllers{
         [Route("/ws/{type}")]
         public async Task get(string type)
         {
-            
-            if (HttpContext.WebSockets.IsWebSocketRequest)
+            try
             {
-                using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
-
-                switch (type)
+                if (HttpContext.WebSockets.IsWebSocketRequest)
                 {
-                    case "app":
-                        if(m_appSocket != null){
-                            await m_appSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-                            Console.WriteLine("Closed old app socket");
-                        }
-                            
-                        m_appSocket = webSocket;
-                        await Echo(m_appSocket);
-                        m_appSocket = null;
-                        Console.WriteLine("Closed old app socket");
-                        break;
-                    case "mower":
-                        if(m_mowerSocket != null){
-                            await m_mowerSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-                            Console.WriteLine("Closed old mower socket");
-                        }
+                    
+                    using var webSocket = await HttpContext.WebSockets.AcceptWebSocketAsync();
 
-                        m_mowerSocket = webSocket;
-                        await Echo(m_mowerSocket);
-                        m_mowerSocket = null;
-                        Console.WriteLine("Closed old mower socket");
-                        break;
-                    default:
-                        await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
-                        break;
+                    switch (type)
+                    {
+                        case "app":
+                            if(m_appSocket != null){
+                                await m_appSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                                Console.WriteLine("Closed old app socket");
+                            }
+                                
+                            m_appSocket = webSocket;
+                            await Echo(m_appSocket);
+                            m_appSocket = null;
+                            Console.WriteLine("Closed old app socket");
+                            break;
+                        case "mower":
+                            if(m_mowerSocket != null){
+                                await m_mowerSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                                Console.WriteLine("Closed old mower socket");
+                            }
+
+                            m_mowerSocket = webSocket;
+                            await Echo(m_mowerSocket);
+                            m_mowerSocket = null;
+                            Console.WriteLine("Closed old mower socket");
+                            break;
+                        default:
+                            await webSocket.CloseAsync(WebSocketCloseStatus.NormalClosure, null, CancellationToken.None);
+                            break;
+                    }
+                }
+                else
+                {
+                    HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
                 }
                 
-                
             }
-            else
+            catch (WebSocketException ex)
             {
-                HttpContext.Response.StatusCode = StatusCodes.Status400BadRequest;
+                if (ex.WebSocketErrorCode == WebSocketError.InvalidState)
+                {
+                    Console.WriteLine("Exception message: " + ex.Message);
+                }
+                else
+                {
+                    throw;
+                }
             }
+            
         }
 
         private static async Task Echo(WebSocket webSocket)
@@ -66,19 +80,22 @@ namespace ims_group4_backend.Controllers{
                 string bufferStr = Encoding.UTF8.GetString(buffer);
                 Console.WriteLine(bufferStr);
 
-                if(webSocket == m_appSocket && m_mowerSocket != null){
+                if(webSocket.State == WebSocketState.Open){
+                    if(webSocket == m_appSocket && m_mowerSocket != null){
                     await m_mowerSocket.SendAsync(
                         new ArraySegment<byte>(buffer, 0, receiveResult.Count),
                         receiveResult.MessageType,
                         receiveResult.EndOfMessage,
                         CancellationToken.None);
-                } else if(webSocket == m_mowerSocket && m_appSocket != null){
-                    await m_appSocket.SendAsync(
+                    } else if(webSocket == m_mowerSocket && m_appSocket != null){
+                        await m_appSocket.SendAsync(
                         new ArraySegment<byte>(buffer, 0, receiveResult.Count),
                         receiveResult.MessageType,
                         receiveResult.EndOfMessage,
                         CancellationToken.None);
+                    }
                 }
+                
                 
                 receiveResult = await webSocket.ReceiveAsync(new ArraySegment<byte>(buffer), CancellationToken.None);
             }
