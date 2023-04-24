@@ -3,6 +3,20 @@ The Backend repository
 
 ## API Endpoints
 #### Live server: https://ims-group4-backend.azurewebsites.net
+
+-------------
+### **Session**
+
+**GET** /api/new_session
+##### Result:
+```
+{
+    true
+}
+```
+
+-------------
+
 -------------
 ### **Positions**
 
