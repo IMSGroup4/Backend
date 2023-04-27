@@ -31,12 +31,14 @@ namespace ims_group4_backend.Controllers{
         }
 
         [HttpPost]
-        public async Task<ActionResult<PositionData>> pushPosition(PositionData newPosition)
+        public async Task<ActionResult<PositionData>> pushPosition(List<PositionData> newPositions)
         {
-            Console.WriteLine(newPosition.position);
+            Console.WriteLine(newPositions);
             try {
-                Position position = await m_positionModel.pushPosition(newPosition.position);
-                return Created(nameof(getPosition), position);
+                foreach (var position in newPositions) {
+                    await m_positionModel.pushPosition(position.position);
+                }
+                return Ok("Created");
             } catch {
                 return BadRequest("Bad request");
             } 
