@@ -83,3 +83,34 @@ The Backend repository
 }
 ```
 -------------
+
+### **Surroundings**
+
+**GET** /api/surroundings
+##### Result:
+```
+[
+    {
+        "x": 1,
+        "y": 0
+    }
+]
+```
+-------------
+
+**POST** /api/surroundings
+##### Body:
+```
+[
+    {
+        "x": 1,
+        "y": 0
+    },
+    {
+        "x": 1,
+        "y": 1
+    }
+]
+```
+-------------
+

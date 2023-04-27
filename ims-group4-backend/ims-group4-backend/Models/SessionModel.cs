@@ -17,7 +17,7 @@ namespace ims_group4_backend.Models{
         public async Task<bool> createSession() {
 			FirebaseResponse obstacleResponse = await m_firebaseClient.DeleteAsync("mower/obstacles/");
 			FirebaseResponse positionResponse = await m_firebaseClient.DeleteAsync("mower/positions/");
-
+			FirebaseResponse surroundingResponse = await m_firebaseClient.DeleteAsync("mower/surroundings/");
 			return true;
         }
     }
