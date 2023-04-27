@@ -15,10 +15,9 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Position>> getPosition(int id){ // int id does not work
-
             Position position = await m_positionModel.getPosition(id);
 
-            if(position != null){
+            if (position != null) {
                 return Ok(position);
             }
             string error = ("Position with id " + id + " does not exist");
@@ -27,20 +26,18 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet]
         public async Task<ActionResult<List<Position>>> getAllPositions(){
-
             var positions = await m_positionModel.getAllPositions();
             return Ok(positions);
-
         }
 
         [HttpPost]
         public async Task<ActionResult<PositionData>> pushPosition(PositionData newPosition)
         {
             Console.WriteLine(newPosition.position);
-            try{
+            try {
                 Position position = await m_positionModel.pushPosition(newPosition.position);
                 return Created(nameof(getPosition), position);
-            }catch{
+            } catch {
                 return BadRequest("Bad request");
             } 
         }
