@@ -90,7 +90,7 @@ The Backend repository
 
 ### **Surroundings**
 
-**GET** /api/surroundings
+**GET** /api/surrounding
 ##### Result:
 ```
 [
@@ -102,7 +102,7 @@ The Backend repository
 ```
 -------------
 
-**POST** /api/surroundings
+**POST** /api/surrounding
 ##### Body:
 ```
 [
