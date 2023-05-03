@@ -32,6 +32,12 @@ namespace ims_group4_backend.Controllers{
             return Ok(obstacles);
         }
 
+        [HttpGet("coordinates")]
+        public async Task<ActionResult<List<Position>>> getAllObstaclesCoordinates() {
+            var obstaclesCoordinates = await m_obstacleModel.getAllObstaclesCoordinates();
+            return Ok(obstaclesCoordinates);
+        }
+
         [HttpPost]
         public async Task<ActionResult<Obstacle>> pushObstacle(ObstacleData newObstacle) {
             Obstacle obstacle = await m_obstacleModel.pushObstacle(newObstacle.obstacle);
