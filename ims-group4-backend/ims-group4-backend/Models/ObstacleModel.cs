@@ -45,12 +45,18 @@ namespace ims_group4_backend.Models{
 
         public async Task<Obstacle> pushObstacle(Obstacle newObstacle) {
             List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await m_googleApiModel.DetectImage(newObstacle.base64_image!);
-            
-            string annotationJson = JsonConvert.SerializeObject(annotations[0]);
-            ImageInformation? infos_image = JsonConvert.DeserializeObject<ImageInformation>(annotationJson);
+            List<ImageInformation> listInfosImages = new List<ImageInformation>();
+            int i = 0;
 
-            newObstacle.infos_image = infos_image;
+            while (i < 3) {
+                string annotationJson = JsonConvert.SerializeObject(annotations[i]);
+                ImageInformation? infos_image = JsonConvert.DeserializeObject<ImageInformation>(annotationJson);
 
+                listInfosImages.Add(infos_image!);
+                i = i + 1;
+            }
+
+            newObstacle.infos_image = listInfosImages;
             Console.WriteLine("New Obstacle");
             Console.WriteLine(newObstacle);
 
