@@ -19,10 +19,10 @@ if (app.Environment.IsDevelopment())
 }
 
 var WebSocketOptions = new WebSocketOptions{
-    KeepAliveInterval = TimeSpan.FromMinutes(1)
+    KeepAliveInterval = TimeSpan.FromSeconds(30)
 };
 
-app.UseWebSockets();
+app.UseWebSockets(WebSocketOptions);
 
 app.UseAuthorization();
 
