@@ -7,7 +7,7 @@ namespace ims_group4_backend.Models{
         public float x{get;set;}
         public float y{get;set;}
         public string? base64_image{get; set;}
-        public ImageInformation? infos_image{get; set;}
+        public List<ImageInformation>? infos_image{get; set;}
     }
 
     public struct ObstacleData {
