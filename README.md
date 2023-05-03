@@ -54,6 +54,18 @@ The Backend repository
 
 ### **Obstacles**
 
+**GET** /api/obstacles/coordinates
+##### Result:
+```
+[
+    {
+        "x": 12,
+        "y": 2
+    }
+]
+```
+-------------
+
 **GET** /api/obstacles
 ##### Result:
 ```
