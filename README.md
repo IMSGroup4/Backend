@@ -76,12 +76,12 @@ The Backend repository
         "base64_image": "your_image_string_here"
         "infos_image": [
             {
-                "Confidence": 0,
-                "Description": "Plant",
-                "Locale": "",
-                "Mid": "/m/05s2s",
-                "Score": 0.9638823,
-                "Topicality": 0.9638823
+                "confidence": 0,
+                "description": "Plant",
+                "locale": "",
+                "mid": "/m/05s2s",
+                "score": 0.9638823,
+                "topicality": 0.9638823
             }
         ]
     }
