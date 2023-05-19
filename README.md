@@ -2,7 +2,7 @@
 The Backend repository
 
 ## API Endpoints
-#### Live server: https://ims-group4-backend.azurewebsites.net
+#### Live server: https://ims-group-4-backend-david.azurewebsites.net
 -------------
 ### **Positions**
 
