@@ -14,10 +14,8 @@ The Backend repository
     true
 }
 ```
-
 -------------
 
--------------
 ### **Positions**
 
 **POST** /api/positions
