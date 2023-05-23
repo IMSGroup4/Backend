@@ -24,12 +24,18 @@ namespace ims_group4_backend.Models{
 
         public async Task<List<Obstacle>?> getAllObstacles(){
             FirebaseResponse response = await m_firebaseClient.GetAsync("mower/obstacles/");
+            if (response == null || response.ResultAs<Dictionary<String, Obstacle>>() == null){
+                return new List<Obstacle>();
+            }
             string obstaclesJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Obstacle>>().Values);
             List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
             return obstacleList;
         }
         public async Task<List<Position>?> getAllObstaclesCoordinates(){
             FirebaseResponse response = await m_firebaseClient.GetAsync("mower/obstacles/");
+            if (response == null || response.ResultAs<Dictionary<string, Position>>() == null){
+                return new List<Position>();
+            }
             string obstaclesJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Obstacle>>().Values);
             List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
             List<Position> obstaclePosition = new List<Position>();
