@@ -17,9 +17,12 @@ namespace ims_group4_backend.Models{
         }
         public async Task<List<Position>?> getAllPositions(){
             FirebaseResponse response = await m_firebaseClient.GetAsync("mower/positions");
+            if (response == null || response.ResultAs<Dictionary<string, Position>>() == null){
+                return new List<Position>();
+            }
             string postionsJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Position>>().Values);
             List<Position>? positionsList = JsonConvert.DeserializeObject<List<Position>>(postionsJson);
-            Console.WriteLine(positionsList);
+
             return positionsList;
         }
         public async Task<Position> pushPosition(Position position){
