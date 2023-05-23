@@ -3,19 +3,38 @@ The Backend repository
 
 ## API Endpoints
 #### Live server: https://ims-group-4-backend-david.azurewebsites.net
+
 -------------
+### **Session**
+
+**GET** /api/new_session
+##### Result:
+```
+{
+    true
+}
+```
+-------------
+
 ### **Positions**
 
 **POST** /api/positions
 ##### Body:
 ```
-{
-    "position": {
-        "timestamp":"123123",
-        "x":"12",
-        "y":"2"
+[
+    {
+        "position": {
+            "x": 12,
+            "y": 2
+        }
+    },
+    {
+        "position": {
+            "x": 13,
+            "y": 3
+        }
     }
-}
+]
 ```
 -------------
 
@@ -24,7 +43,6 @@ The Backend repository
 ```
 [
     {
-        "timestamp": "12243123",
         "x": 12,
         "y": 2
     }
@@ -34,23 +52,36 @@ The Backend repository
 
 ### **Obstacles**
 
+**GET** /api/obstacles/coordinates
+##### Result:
+```
+[
+    {
+        "x": 12,
+        "y": 2
+    }
+]
+```
+-------------
+
 **GET** /api/obstacles
 ##### Result:
 ```
 [
     {
-        "timestamp": "1234567",
         "x": 1,
         "y": 1,
         "base64_image": "your_image_string_here"
-        "infos_image": {
-            "Confidence": 0,
-            "Description": "Plant",
-            "Locale": "",
-            "Mid": "/m/05s2s",
-            "Score": 0.9638823,
-            "Topicality": 0.9638823
-        }
+        "infos_image": [
+            {
+                "confidence": 0,
+                "description": "Plant",
+                "locale": "",
+                "mid": "/m/05s2s",
+                "score": 0.9638823,
+                "topicality": 0.9638823
+            }
+        ]
     }
 ]
 ```
@@ -62,10 +93,40 @@ The Backend repository
 {
     "obstacle": {
         "base64_image": "yourimageinbase64",
-        "timestamp":"123123",
         "x":"12",
         "y":"2"
     }
 }
 ```
 -------------
+
+### **Surroundings**
+
+**GET** /api/surrounding
+##### Result:
+```
+[
+    {
+        "x": 1,
+        "y": 0
+    }
+]
+```
+-------------
+
+**POST** /api/surrounding
+##### Body:
+```
+[
+    {
+        "x": 1,
+        "y": 0
+    },
+    {
+        "x": 1,
+        "y": 1
+    }
+]
+```
+-------------
+

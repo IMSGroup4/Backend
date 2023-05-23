@@ -1,4 +1,3 @@
-
 using ims_group4_backend.Models;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -16,10 +15,9 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Position>> getPosition(int id){ // int id does not work
-
             Position position = await m_positionModel.getPosition(id);
 
-            if(position != null){
+            if (position != null) {
                 return Ok(position);
             }
             string error = ("Position with id " + id + " does not exist");
@@ -28,20 +26,20 @@ namespace ims_group4_backend.Controllers{
 
         [HttpGet]
         public async Task<ActionResult<List<Position>>> getAllPositions(){
-
             var positions = await m_positionModel.getAllPositions();
             return Ok(positions);
-
         }
 
         [HttpPost]
-        public async Task<ActionResult<PositionData>> pushPosition(PositionData newPosition)
+        public async Task<ActionResult<PositionData>> pushPosition(List<PositionData> newPositions)
         {
-            Console.WriteLine(newPosition.position);
-            try{
-                Position position = await m_positionModel.pushPosition(newPosition.position);
-                return Created(nameof(getPosition), position);
-            }catch{
+            Console.WriteLine(newPositions);
+            try {
+                foreach (var position in newPositions) {
+                    await m_positionModel.pushPosition(position.position);
+                }
+                return Ok("Created");
+            } catch {
                 return BadRequest("Bad request");
             } 
         }

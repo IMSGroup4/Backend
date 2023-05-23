@@ -28,15 +28,35 @@ namespace ims_group4_backend.Models{
             List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
             return obstacleList;
         }
+        public async Task<List<Position>?> getAllObstaclesCoordinates(){
+            FirebaseResponse response = await m_firebaseClient.GetAsync("mower/obstacles/");
+            string obstaclesJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Obstacle>>().Values);
+            List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
+            List<Position> obstaclePosition = new List<Position>();
+            Position pos = new Position();
+
+            foreach (Obstacle obstacle in obstacleList!) {
+                pos.x = obstacle.x;
+                pos.y = obstacle.y;
+                obstaclePosition.Add(pos);
+            }
+            return obstaclePosition;
+        }
 
         public async Task<Obstacle> pushObstacle(Obstacle newObstacle) {
             List<Google.Cloud.Vision.V1.EntityAnnotation> annotations = await m_googleApiModel.DetectImage(newObstacle.base64_image!);
-            
-            string annotationJson = JsonConvert.SerializeObject(annotations[0]);
-            ImageInformation? infos_image = JsonConvert.DeserializeObject<ImageInformation>(annotationJson);
+            List<ImageInformation> listInfosImages = new List<ImageInformation>();
+            int i = 0;
 
-            newObstacle.infos_image = infos_image;
+            while (i < 3) {
+                string annotationJson = JsonConvert.SerializeObject(annotations[i]);
+                ImageInformation? infos_image = JsonConvert.DeserializeObject<ImageInformation>(annotationJson);
 
+                listInfosImages.Add(infos_image!);
+                i = i + 1;
+            }
+
+            newObstacle.infos_image = listInfosImages;
             Console.WriteLine("New Obstacle");
             Console.WriteLine(newObstacle);
 
