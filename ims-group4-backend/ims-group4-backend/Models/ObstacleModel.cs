@@ -39,9 +39,9 @@ namespace ims_group4_backend.Models{
             string obstaclesJson = JsonConvert.SerializeObject(response.ResultAs<Dictionary<String, Obstacle>>().Values);
             List<Obstacle>? obstacleList = JsonConvert.DeserializeObject<List<Obstacle>>(obstaclesJson);
             List<Position> obstaclePosition = new List<Position>();
-            Position pos = new Position();
 
             foreach (Obstacle obstacle in obstacleList!) {
+                Position pos = new Position();
                 pos.x = obstacle.x;
                 pos.y = obstacle.y;
                 obstaclePosition.Add(pos);
